@@ -15,6 +15,6 @@
   source venv/bin/activate
 
 4. Install the dependencies:
-```bash
-python3 -m pip install .
+    ```bash
+    python3 -m pip install .
 
