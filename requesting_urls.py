@@ -20,17 +20,17 @@ def get_html(url: str, params: dict | None = None, output: str | None = None):
         html (str):
             The HTML of the page, as text.
     """
-    raise NotImplementedError("remove me to begin task")
     # passing the optional parameters argument to the get function
-    response = ...
+    response = requests.get(url, params=params)
 
-    html_str = ...
+    html_str = response.text
 
     if output:
         # if output is specified, the request url and text content are written
         # to the file at `output`.
         # The first line should be the URL,
         # and the rest of the file should be the response contents.
-        ...
-
+        with open(output, 'w', encoding='utf-8') as file:
+            file.write(response.url + "\n")  # First line is the final URL after any redirects or parameters
+            file.write(html_str)  # Write the HTML content
     return html_str
