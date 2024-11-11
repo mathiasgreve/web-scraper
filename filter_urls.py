@@ -67,22 +67,26 @@ def find_articles(
 ) -> set[str]:
     """Finds all the wiki articles inside a html text. Make call to find urls, and filter
     arguments:
-        - text (str) : the html text to parse
+        - html (str) : the html text to parse
         - output (str, optional): the file to write the output to if wanted
         - base_url (str, optional): the base_url to pass through to find_urls
     returns:
         - (Set[str]) : a set with urls to all the articles found
     """
-    raise NotImplementedError("remove me to begin task")
-    urls = ...
-    pattern = ...
-    articles = ...
-    ...
+    urls = find_urls(html, base_url)
+    pattern = re.compile(
+        r"https?://[a-z]+\.wikipedia\.org/wiki/[^:]+$", flags=re.IGNORECASE
+    )
+    articles = {url for url in urls if pattern.match(url)}
 
     # Write to file if wanted
     if output:
-        ...
-    ...
+        print(f"Writing Wikipedia article URLs to: {output}")
+        with open(output, "w", encoding="utf-8") as file:
+            for article_url in articles:
+                file.write(article_url + "\n")
+
+    return articles
 
 
 ## Regex example
