@@ -25,19 +25,39 @@ def find_urls(
     Returns:
         urls (Set[str]) : set with all the urls found in html text
     """
-    raise NotImplementedError("remove me to begin task")
     # create and compile regular expression(s)
 
-    urls = ...
+    urls = set()
+    
+    
     # 1. find all the anchor tags, then
-    # 2. find the urls href attributes
+    anchor_pattern = re.compile(r'<a[^>]+>', flags=re.IGNORECASE)
 
+    # 2. find the urls href attributes
+    href_pattern = re.compile(r'href="([^"]+)"', flags=re.IGNORECASE)
+    
     # Write to file if requested
     if output:
         print(f"Writing to: {output}")
-        ...
+        with open(output,"w", encoding="utf-8") as file:
+            file.write(html)
 
-    ...
+    for a_tag in anchor_pattern.findall(html):
+        match = href_pattern.search(a_tag)
+        if match:
+            url = match.group(1)
+
+            if url.startswith('#'):
+                continue
+
+            url = url.split('#')[0]
+
+            if url.startswith('/'):
+                url = urljoin(base_url, url)
+
+            urls.add(url)
+
+    return urls
 
 
 def find_articles(
